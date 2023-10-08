@@ -58,9 +58,11 @@ namespace ozToy {
 		BANG_EQUAL,
 		ARROW,
 		LET,
+		VAR,
 		CLASS,
 		STRUCT,
 		ENUM,
+		MODULE,
 		FN,
 		IF,
 		THEN,
@@ -124,9 +126,11 @@ namespace ozToy {
 		"BANG_EQUAL",
 		"ARROW",
 		"LET",
+		"VAR",
 		"CLASS",
 		"STRUCT",
 		"ENUM",
+		"MODULE",
 		"FN",
 		"IF",
 		"THEN",
@@ -159,12 +163,14 @@ namespace ozToy {
 		Token scanNumber(char triggerChar);
 		Token scanString(char triggerChar);
 		Token scanChar(char triggerChar);
-
+		void scan();
 	public:
 		Scanner(std::istream* input);
 		Token getToken();
+		Token peekToken();
 		void putBackToken(Token token);
 		void ungetToken();
+		void consumeToken();
 	};
 }
 

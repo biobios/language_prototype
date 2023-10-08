@@ -3,6 +3,7 @@
 ozToy::TokenType ozToy::Scanner::scanKeywordOrIdentifier(std::string& text)
 {
 	if (text == "fn") return TokenType::FN;
+	if (text == "let") return TokenType::LET;
 	if (text == "if") return TokenType::IF;
 	if (text == "then") return TokenType::THEN;
 	if (text == "else") return TokenType::ELSE;
@@ -11,6 +12,8 @@ ozToy::TokenType ozToy::Scanner::scanKeywordOrIdentifier(std::string& text)
 	if (text == "struct") return TokenType::STRUCT;
 	if (text == "class") return TokenType::CLASS;
 	if (text == "enum") return TokenType::ENUM;
+	if (text == "module") return TokenType::MODULE;
+	return TokenType::IDENTIFIER;
 }
 
 ozToy::Token ozToy::Scanner::scanIdentifier(char triggerChar)
@@ -26,6 +29,7 @@ ozToy::Token ozToy::Scanner::scanIdentifier(char triggerChar)
 			break;
 		}
 	}
+	token.type = scanKeywordOrIdentifier(token.text);
 	return token;
 }
 
@@ -121,18 +125,8 @@ ozToy::Token ozToy::Scanner::scanChar(char triggerChar)
 	return Token{ TokenType::CHAR, std::string(1, c) };
 }
 
-ozToy::Scanner::Scanner(std::istream* input) : input(input), tokenUnget(false)
+void ozToy::Scanner::scan()
 {
-}
-
-ozToy::Token ozToy::Scanner::getToken()
-{
-	if (tokenUnget)
-	{
-		tokenUnget = false;
-		return lastToken;
-	}
-
 	char c = input->get();
 	while (c == ' ' || c == '\t' || c == '\n' || c == '\r') {
 		c = input->get();
@@ -165,7 +159,8 @@ ozToy::Token ozToy::Scanner::getToken()
 			}
 			else if (c == '-') {
 				lastToken = Token{ TokenType::MINUS_MINUS, "--" };
-			}else if(c == '>') {
+			}
+			else if (c == '>') {
 				lastToken = Token{ TokenType::ARROW, "->" };
 			}
 			else {
@@ -356,18 +351,61 @@ ozToy::Token ozToy::Scanner::getToken()
 			break;
 		}
 	}
+}
+
+ozToy::Scanner::Scanner(std::istream* input) : input(input), tokenUnget(false)
+{
+}
+
+ozToy::Token ozToy::Scanner::getToken()
+{
+	if (tokenUnget)
+	{
+		tokenUnget = false;
+		return lastToken;
+	}
+
+	scan();
+
+	return lastToken;
+}
+
+ozToy::Token ozToy::Scanner::peekToken()
+{
+	if (tokenUnget) {
+		return lastToken;
+	}
+
+	scan();
+	tokenUnget = true;
 	return lastToken;
 }
 
 void ozToy::Scanner::putBackToken(Token token)
 {
+	if (tokenUnget) {
+		lastToken = Token{ TokenType::ERROR, "Cannot put back more than one token" };
+		return;
+	}
 	tokenUnget = true;
 	lastToken = token;
 }
 
 void ozToy::Scanner::ungetToken()
 {
-	tokenUnget = true;
+	if (tokenUnget) {
+		lastToken = Token{ TokenType::ERROR, "Cannot put back more than one token" };
+		return;
+	}
+}
+
+void ozToy::Scanner::consumeToken()
+{
+	if (tokenUnget) {
+		tokenUnget = false;
+		return;
+	}
+	scan();
 }
 
 std::string ozToy::Token::toString()

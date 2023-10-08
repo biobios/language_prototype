@@ -1,0 +1,8 @@
+関数定義
+fn main() -> unit {
+
+}
+
+変数宣言
+let x : hoge = hoge:from(); //不変
+var x : hoge = hoge:from(); //可変
