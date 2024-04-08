@@ -140,9 +140,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AST.hpp" />
+    <ClInclude Include="HIRBuilder.hpp" />
+    <ClInclude Include="HIR.hpp" />
+    <ClInclude Include="langdef.hpp" />
+    <ClInclude Include="MIR.hpp" />
     <ClInclude Include="Scanner.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AST.cpp" />
+    <ClCompile Include="HIRBuilder.cpp" />
+    <ClCompile Include="HIR.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scanner.cpp" />
   </ItemGroup>

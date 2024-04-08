@@ -4,5 +4,82 @@ fn main() -> unit {
 }
 
 変数宣言
-let x : hoge = hoge:from(); //不変
-var x : hoge = hoge:from(); //可変
+let x : hoge = hoge::from(); //不変
+var x : hoge = hoge::from(); //可変
+
+module hogehoge {
+  class fugafuga {
+    fugafuga : fn unit -> unit,
+  }
+
+  struct foo {
+    a : int,
+    b : int,
+  }
+}
+
+any class型の構造
+{
+class関数テーブルへのポインタ
+thisポインタ
+}
+
+structの構造
+{
+メンバ変数が並ぶ
+}
+
+struct参照の構造
+{
+structへのポインタ
+}
+
+let c = 3;
+let a = let b = c;
+(d, e) = (f, g);
+
+let d = if(hoge == a){
+  a
+}
+else
+{
+  if hoge == b {
+    b
+  }
+  else
+  {
+    c
+  }
+};
+
+loop{
+
+};
+
+let a = for(int i = 0; i < 10; i++){
+  
+}
+
+let a = if(b == c){}else{};
+
+構文木的にunit型しか返さないとき、後ろのセミコロンを省略できる。
+for文
+while文
+if文で最後がセミコロンで終わるブロックが存在するとき
+loop文で戻り値の無いbreakが存在するとき
+
+演算子順位（降順）
+
+乗除余(左結合)
+和差(左結合)
+ビットシフト(左結合)
+大小比較(左結合)
+等・不等(左結合)
+AND(左結合)
+XOR(左結合)
+OR(左結合)
+短絡的論理AND(左結合)
+短絡的論理OR(左結合)
+代入・複合代入（右結合）
+START,END
+
